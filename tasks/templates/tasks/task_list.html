@@ -1,16 +1,35 @@
 <!-- tasks/templates/tasks/task_list.html -->
+{% extends 'tasks/base.html' %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Task Manager</title>
-</head>
-<body>
-    <h1>My Tasks</h1>
-    <ul>
-        <li>Task 1 — placeholder</li>
-        <li>Task 2 — placeholder</li>
-        <li>Task 3 — placeholder</li>
+{% block title %}Tasks — Task Manager{% endblock %}
+
+{% block content %}
+<h1>My Tasks</h1>
+
+<p>
+    Total: <strong>{{ total }}</strong> |
+    Pending: <strong>{{ pending }}</strong> |
+    Done: <strong>{{ done }}</strong>
+</p>
+
+{% if tasks %}
+    <ul style="list-style: none; padding: 0;">
+    {% for task in tasks %}
+        <li style="padding: 10px; margin: 5px 0; border: 1px solid #eee; border-radius: 4px;">
+            {% if task.done %}
+                ✅ <span class="done-task">{{ task.title }}</span>         
+            {% else %}
+                ⬜ {{ task.title }}
+            {% endif %}
+            {% if task.priority == "high"%} ⚠️ {% endif %}
+            <span class="badge {{ task.priority }}">{{ task.priority }}</span>
+        </li>
+    {% endfor %}
     </ul>
-</body>
-</html>
+{% else %}
+    <p>No tasks yet. Add one!</p>
+{% endif %}
+
+{% endblock %}
+
+

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Task Manager{% endblock %}</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    nav a {
+        margin-right: 15px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+    }
+
+    nav {
+        margin-bottom: 30px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+    }
+
+    .active {
+        color: blue;
+        border-bottom: 2px solid blue;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    .high { background: #ffe0e0; color: #c00; }
+    .medium { background: #fff4e0; color: #a60; }
+    .low { background: #e0ffe0; color: #060; }
+
+    .done-task {
+        text-decoration: line-through;
+        color: #999;
+    }
+
+</style>
+</head>
+<body>
+<nav>
+    <a href="{% url 'home' %}"
+       class="{% if request.path == '/' %}active{% endif %}">
+       Home
+    </a>
+
+    <a href="{% url 'task_list' %}"
+       class="{% if request.path == '/tasks/' %}active{% endif %}">
+       Tasks
+    </a>
+
+    <a href="{% url 'about' %}"
+       class="{% if request.path == '/about/' %}active{% endif %}">
+       About
+    </a>
+</nav>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

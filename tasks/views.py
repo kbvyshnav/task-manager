@@ -1,19 +1,37 @@
+# tasks/views.py
 from django.shortcuts import render
 from django.http import HttpResponse
-from datetime import datetime
+import datetime
 
 def home(request):
-    today=datetime.today().strftime("%d-%m-%Y")
-
-    return HttpResponse(
-        f"Welcome to Task Manager — Home Page <br> Today's date is: {today}"
-    )
-
-def about(request):
-    return HttpResponse("<h1>About</h1><p>This is a task manager app built with Django.</p>")
+    context = {
+        "app_name" : "Task Manager",
+        "current_time": datetime.datetime.now(),
+        "stats": {
+            "total": 5,
+            "pending": 3,
+            "done": 2,
+        }
+    }
+    return render(request, 'tasks/home.html', context)
 
 def task_list(request):
-    return render(request, 'tasks/task_list.html')
+    tasks = [
+        {"id": 1, "title": "Buy groceries", "done": True, "priority": "low"},
+        {"id": 2, "title": "Fix login bug", "done": False, "priority": "high"},
+        {"id": 3, "title": "Write unit tests", "done": False, "priority": "medium"},
+        {"id": 4, "title": "Update README", "done": True, "priority": "low"},
+        {"id": 5, "title": "Deploy to staging", "done": False, "priority": "high"},
+    ]
+    tasks.sort(key=lambda task: task["done"])
 
-def task_detail(request, task_id):
-    return HttpResponse(f"Viewing task number {task_id}")
+    context = {
+        "tasks": tasks,
+        "total": len(tasks),
+        "pending": len([t for t in tasks if not t["done"]]),
+        "done": len([t for t in tasks if t["done"]]),
+    }
+    return render(request, 'tasks/task_list.html', context)
+
+def about(request):
+    return render(request, 'tasks/about.html')

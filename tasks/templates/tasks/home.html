@@ -1,0 +1,20 @@
+<!-- tasks/templates/tasks/home.html -->
+{% extends 'tasks/base.html' %}
+
+{% block title %}Home — Task Manager{% endblock %}
+
+{% block content %}
+<h1>{{ app_name }}</h1>
+<div style="display: flex; gap: 20px; margin: 20px 0;">
+    <div style="padding: 20px; background: #f0f0f0; border-radius: 8px; text-align: center;">
+        <h2>{{ stats.total }}</h2><p>Total Tasks</p>
+    </div>
+    <div style="padding: 20px; background: #fff4e0; border-radius: 8px; text-align: center;">
+        <h2>{{ stats.pending }}</h2><p>Pending</p>
+    </div>
+    <div style="padding: 20px; background: #e0ffe0; border-radius: 8px; text-align: center;">
+        <h2>{{ stats.done }}</h2><p>Done</p>
+    </div>
+</div>
+<a href="{% url 'task_list' %}">View all tasks →</a>
+{% endblock %}
