@@ -1,37 +1,36 @@
 # tasks/views.py
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Task
 import datetime
+from django.shortcuts import render, get_object_or_404
 
 def home(request):
+    stats = {
+        "total" : Task.objects.count(),
+        "pending" : Task.objects.filter(done=False).count(),
+        "done" : Task.objects.filter(done=True).count(),
+    }
     context = {
         "app_name" : "Task Manager",
         "current_time": datetime.datetime.now(),
-        "stats": {
-            "total": 5,
-            "pending": 3,
-            "done": 2,
-        }
+        "stats": stats,
     }
     return render(request, 'tasks/home.html', context)
 
 def task_list(request):
-    tasks = [
-        {"id": 1, "title": "Buy groceries", "done": True, "priority": "low"},
-        {"id": 2, "title": "Fix login bug", "done": False, "priority": "high"},
-        {"id": 3, "title": "Write unit tests", "done": False, "priority": "medium"},
-        {"id": 4, "title": "Update README", "done": True, "priority": "low"},
-        {"id": 5, "title": "Deploy to staging", "done": False, "priority": "high"},
-    ]
-    tasks.sort(key=lambda task: task["done"])
-
+    tasks = Task.objects.all()
     context = {
         "tasks": tasks,
-        "total": len(tasks),
-        "pending": len([t for t in tasks if not t["done"]]),
-        "done": len([t for t in tasks if t["done"]]),
+        "total": tasks.count(),
+        "pending": tasks.filter(done=False).count(),
+        "done": tasks.filter(done=True).count(),
     }
     return render(request, 'tasks/task_list.html', context)
 
 def about(request):
     return render(request, 'tasks/about.html')
+
+def task_detail(request, task_id):
+    task = get_object_or_404(Task, id =task_id)
+    return render(request, 'tasks/task_detail.html',{'task':task})

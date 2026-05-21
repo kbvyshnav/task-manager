@@ -17,12 +17,12 @@
     {% for task in tasks %}
         <li style="padding: 10px; margin: 5px 0; border: 1px solid #eee; border-radius: 4px;">
             {% if task.done %}
-                ✅ <span class="done-task">{{ task.title }}</span>         
+                ✅ <span class="done-task"><a href="{% url 'task_detail' task.id%}">{{ task.title }}</a></span>         
             {% else %}
-                ⬜ {{ task.title }}
+                ⬜ <a href="{% url 'task_detail' task.id%}">{{ task.title }}</a>
             {% endif %}
             {% if task.priority == "high"%} ⚠️ {% endif %}
-            <span class="badge {{ task.priority }}">{{ task.priority }}</span>
+            <span class="badge {{ task.priority }}">{{ task.get_priority_display }}</span>
         </li>
     {% endfor %}
     </ul>
