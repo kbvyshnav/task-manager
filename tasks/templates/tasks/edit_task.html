@@ -1,0 +1,40 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}
+Edit Task
+{% endblock %}
+
+{% block content %}
+
+<h1>Edit: {{ task.title }}</h1>
+
+<form method="POST" style="max-width: 500px;">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div style="margin-bottom:15px;">
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}
+            </label>
+
+            {{ field }}
+
+            {% if field.errors %}
+                <p style="color:red;">
+                    {{ field.errors.0 }}
+                </p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit">
+        Save Changes
+    </button>
+
+    <a href="{% url 'task_detail' task.id %}">
+        Cancel
+    </a>
+
+</form>
+
+{% endblock %}

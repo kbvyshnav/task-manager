@@ -64,6 +64,20 @@
        About
     </a>
 </nav>
+{% if messages %}
+    {% for message in messages %}
+        <div style="
+            padding:10px;
+            margin-bottom:15px;
+            background:#e0ffe0;
+            border-left:4px solid green;">
+
+            {{ message }}
+
+        </div>
+    {% endfor %}
+{% endif %}
+
 
     {% block content %}
     {% endblock %}

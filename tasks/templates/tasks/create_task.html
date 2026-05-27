@@ -1,0 +1,29 @@
+<!-- tasks/templates/tasks/create_task.html -->
+{% extends 'tasks/base.html' %}
+
+{% block title %}New Task{% endblock %}
+
+{% block content %}
+<h1>Create New Task</h1>
+
+<form method="POST" style="max-width: 500px;">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div style="margin-bottom: 15px;">
+            <label for="{{ field.id_for_label }}" style="display: block; font-weight: bold; margin-bottom: 4px;">
+                {{ field.label }}
+            </label>
+            {{ field }}
+            {% if field.errors %}
+                <p style="color: red; margin: 4px 0;">{{ field.errors.0 }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <button type="submit" style="padding: 10px 20px; background: #333; color: white; border: none; cursor: pointer;">
+        Create Task
+    </button>
+    <a href="{% url 'task_list' %}" style="margin-left: 10px;">Cancel</a>
+</form>
+{% endblock %}
