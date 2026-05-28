@@ -39,19 +39,4 @@ class TaskAdmin(admin.ModelAdmin):
         }),
     ]
 
-    # Custom column — not a model field, a method
-    def short_description(self, obj):
-        if obj.description:
-            return obj.description[:50] + '...' if len(obj.description) > 50 else obj.description
-        return '—'
-
-    short_description.short_description = 'Description'  # column header label
-
-
-    # Custom admin action — mark selected tasks as done
-    @admin.action(description='Mark selected tasks as done')
-    def mark_done(self, request, queryset):
-        updated = queryset.update(done=True)
-        self.message_user(request, f'{updated} task(s) marked as done.')
-
-    actions = ['mark_done']
+   
