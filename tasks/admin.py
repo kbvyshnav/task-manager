@@ -1,6 +1,15 @@
 # tasks/admin.py
 from django.contrib import admin
-from .models import Task
+from .models import Task, Category
+
+# tasks/admin.py — add above TaskAdmin
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'color', 'task_count']
+
+    def task_count(self, obj):
+        return obj.tasks.count()  # uses related_name='tasks'
+    task_count.short_description = 'Tasks'
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
@@ -28,14 +37,19 @@ class TaskAdmin(admin.ModelAdmin):
     # Organise fields in the edit form into sections
     fieldsets = [
         ('Task Details', {
-            'fields': ['title', 'description', 'priority']
+        'fields': [
+            'title',
+            'description',
+            'priority',
+            'category'
+        ]
         }),
         ('Status', {
             'fields': ['done']
         }),
         ('Timestamps', {
             'fields': ['created_at', 'updated_at'],
-            'classes': ['collapse']  # collapsible section
+            'classes': ['collapse']
         }),
     ]
 
