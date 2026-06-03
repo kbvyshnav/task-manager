@@ -60,13 +60,20 @@ Tasks — Task Manager
 
 
     {% if task.priority == "high" %}
-        ⚠️
+    ⚠️
     {% endif %}
-
 
     <span class="badge {{ task.priority }}">
         {{ task.get_priority_display }}
     </span>
+
+    {% if task.category %}
+        <span style="color: {{ task.category.color }};">
+            {{ task.category.name }}
+        </span>
+    {% endif %}
+
+    <br><br>
 
 
     <br><br>
