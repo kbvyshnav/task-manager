@@ -1,42 +1,72 @@
 {% extends 'tasks/base.html' %}
 
-{% block title %}
-Task Details
-{% endblock %}
+{% block title %}{{ task.title }} — Task Manager{% endblock %}
 
 {% block content %}
 
 <h1>{{ task.title }}</h1>
 
-<p>
-    <strong>Description:</strong>
-    {{ task.description }}
-</p>
-
-<p>
-    <strong>Priority:</strong>
-    {{ task.get_priority_display }}
-</p>
-
-<p>
-    <strong>Status:</strong>
-
-    {% if task.done %}
-        ✅ Done
-    {% else %}
-        ⬜ Pending
+<table style="border-collapse: collapse; width: 100%; max-width: 580px; margin-bottom: 24px;">
+    <tr>
+        <td style="padding: 8px 0; font-weight: bold; width: 120px; color: #555;">Priority</td>
+        <td>
+            {% if task.priority == 'high' %}⚠️{% endif %}
+            <span class="badge {{ task.priority }}">{{ task.get_priority_display }}</span>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 8px 0; font-weight: bold; color: #555;">Status</td>
+        <td>{% if task.done %}✅ Done{% else %}⬜ Pending{% endif %}</td>
+    </tr>
+    {% if task.category %}
+    <tr>
+        <td style="padding: 8px 0; font-weight: bold; color: #555;">Category</td>
+        <td><span style="color: {{ task.category.color }}; font-weight: bold;">{{ task.category.name }}</span></td>
+    </tr>
     {% endif %}
-</p>
+    {% if task.due_date %}
+    <tr>
+        <td style="padding: 8px 0; font-weight: bold; color: #555;">Due Date</td>
+        <td>{{ task.due_date|date:"N j, Y" }}</td>
+    </tr>
+    {% endif %}
+    {% if task.description %}
+    <tr>
+        <td style="padding: 8px 0; font-weight: bold; color: #555; vertical-align: top;">Description</td>
+        <td style="line-height: 1.6;">{{ task.description }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td style="padding: 8px 0; font-weight: bold; color: #555;">Created</td>
+        <td>{{ task.created_at|date:"N j, Y, g:i a" }}</td>
+    </tr>
+    {% if task.updated_at != task.created_at %}
+    <tr>
+        <td style="padding: 8px 0; font-weight: bold; color: #555;">Updated</td>
+        <td>{{ task.updated_at|date:"N j, Y, g:i a" }}</td>
+    </tr>
+    {% endif %}
+</table>
 
-<p>
-    <strong>Created:</strong>
-    {{ task.created_at }}
-</p>
+<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+    <a href="{% url 'edit_task' task.id %}"
+       style="padding: 8px 16px; background: #333; color: white; text-decoration: none; border-radius: 4px;">
+        Edit
+    </a>
+
+    <form method="POST" action="{% url 'toggle_done' task.id %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" style="padding: 8px 16px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: white;">
+            {% if task.done %}Mark Pending{% else %}Mark Done{% endif %}
+        </button>
+    </form>
+
+    <a href="{% url 'delete_task' task.id %}" style="padding: 8px 16px; color: #c00; text-decoration: none;">
+        Delete
+    </a>
+</div>
 
 <br>
-
-<a href="{% url 'task_list' %}">
-    ← Back to tasks
-</a>
+<a href="{% url 'task_list' %}" style="color: #555; text-decoration: none;">← Back to tasks</a>
 
 {% endblock %}

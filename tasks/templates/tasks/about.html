@@ -1,17 +1,39 @@
-<!-- tasks/templates/tasks/about.html -->
-{% extends 'tasks/base.html '%}
+{% extends 'tasks/base.html' %}
 
-{% block title %}Tasks - About {% endblock %}
+{% block title %}About — Task Manager{% endblock %}
 
 {% block content %}
 
-<h1> About </h1>
+<h1>About</h1>
 
-<p> This is a task manager app built with Django.<br>
-    User can manage tasks, see total, pending, done tasks in the main dashboard<br>
-    More features coming soon<br><br><br>
+<p style="max-width: 600px; line-height: 1.7; color: #444;">
+    A task management web application built with <strong>Python</strong> and <strong>Django 5</strong>.
+    Developed as a hands-on learning project to understand the Django framework end-to-end —
+    from models and views to forms, the ORM, and the admin interface.
+</p>
 
-    Built by Vy 🚀 
+<h2 style="margin-top: 30px;">Features</h2>
+<ul style="line-height: 2.2; color: #444;">
+    <li>Create, edit, and delete tasks</li>
+    <li>Mark tasks as done / pending with one click</li>
+    <li>Set priority levels: High, Medium, Low</li>
+    <li>Assign tasks to colour-coded categories</li>
+    <li>Due dates to track deadlines</li>
+    <li>Filter tasks by status, priority, or category</li>
+    <li>Dashboard with live stats (total, pending, done)</li>
+    <li>Django Admin with batch actions and search</li>
+</ul>
+
+<h2 style="margin-top: 30px;">Tech Stack</h2>
+<ul style="line-height: 2.2; color: #444;">
+    <li><strong>Backend:</strong> Python 3, Django 5.2</li>
+    <li><strong>Database:</strong> SQLite (development)</li>
+    <li><strong>Templates:</strong> Django Template Language (DTL)</li>
+    <li><strong>Styling:</strong> Plain CSS — no external frameworks</li>
+</ul>
+
+<p style="margin-top: 30px; color: #888; font-size: 14px;">
+    Built by Vyshnav K B
 </p>
 
 {% endblock %}

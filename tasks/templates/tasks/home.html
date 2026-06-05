@@ -1,20 +1,36 @@
-<!-- tasks/templates/tasks/home.html -->
 {% extends 'tasks/base.html' %}
 
 {% block title %}Home — Task Manager{% endblock %}
 
 {% block content %}
-<h1>{{ app_name }}</h1>
-<div style="display: flex; gap: 20px; margin: 20px 0;">
-    <div style="padding: 20px; background: #f0f0f0; border-radius: 8px; text-align: center;">
-        <h2>{{ stats.total }}</h2><p>Total Tasks</p>
+
+<h1>Task Manager</h1>
+<p style="color: #666; margin-bottom: 24px;">Stay on top of your tasks.</p>
+
+<div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px;">
+    <div style="flex: 1; min-width: 120px; padding: 20px; background: #f0f0f0; border-radius: 8px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold;">{{ stats.total }}</div>
+        <div style="color: #666; font-size: 14px;">Total Tasks</div>
     </div>
-    <div style="padding: 20px; background: #fff4e0; border-radius: 8px; text-align: center;">
-        <h2>{{ stats.pending }}</h2><p>Pending</p>
+    <div style="flex: 1; min-width: 120px; padding: 20px; background: #fff4e0; border-radius: 8px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #a60;">{{ stats.pending }}</div>
+        <div style="color: #666; font-size: 14px;">Pending</div>
     </div>
-    <div style="padding: 20px; background: #e0ffe0; border-radius: 8px; text-align: center;">
-        <h2>{{ stats.done }}</h2><p>Done</p>
+    <div style="flex: 1; min-width: 120px; padding: 20px; background: #e0ffe0; border-radius: 8px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #060;">{{ stats.done }}</div>
+        <div style="color: #666; font-size: 14px;">Done</div>
     </div>
 </div>
-<a href="{% url 'task_list' %}">View all tasks →</a>
+
+<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+    <a href="{% url 'task_list' %}"
+       style="padding: 10px 20px; background: #333; color: white; text-decoration: none; border-radius: 4px;">
+        View All Tasks
+    </a>
+    <a href="{% url 'create_task' %}"
+       style="padding: 10px 20px; background: #555; color: white; text-decoration: none; border-radius: 4px;">
+        + New Task
+    </a>
+</div>
+
 {% endblock %}

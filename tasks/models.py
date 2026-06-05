@@ -1,9 +1,10 @@
-# tasks/models.py
 from django.db import models
+from django.urls import reverse
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    color = models.CharField(max_length=7, default='#333333')  # hex color
+    color = models.CharField(max_length=7, default='#333333')
 
     def __str__(self):
         return self.name
@@ -21,16 +22,13 @@ class Task(models.Model):
     ]
 
     title = models.CharField(max_length=200)
-    description = models.TextField(blank=True, default='')
+    description = models.TextField(blank=True)
     done = models.BooleanField(default=False)
-    priority = models.CharField(
-        max_length=10,
-        choices=PRIORITY_CHOICES,
-        default='medium'
-    )
+    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
+    due_date = models.DateField(null=True, blank=True)
     category = models.ForeignKey(
         Category,
-        on_delete=models.SET_NULL,  # if category deleted, task stays, category becomes null
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='tasks'
@@ -40,6 +38,9 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('task_detail', kwargs={'task_id': self.pk})
 
     class Meta:
         ordering = ['-created_at']

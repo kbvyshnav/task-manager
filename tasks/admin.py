@@ -1,48 +1,29 @@
-# tasks/admin.py
 from django.contrib import admin
 from .models import Task, Category
 
-# tasks/admin.py — add above TaskAdmin
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'color', 'task_count']
 
     def task_count(self, obj):
-        return obj.tasks.count()  # uses related_name='tasks'
+        return obj.tasks.count()
     task_count.short_description = 'Tasks'
+
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    # Columns shown in the list view
-    list_display = ['title', 'priority', 'done', 'created_at', 'short_description']
-
-    # Sidebar filters
-    list_filter = ['priority', 'done', 'created_at']
-
-    # Search box — searches these fields
+    list_display = ['title', 'priority', 'done', 'due_date', 'category', 'created_at', 'short_description']
+    list_filter = ['priority', 'done', 'category', 'created_at']
     search_fields = ['title', 'description']
-
-    # Default ordering in list
     ordering = ['-created_at']
-
-    # Make 'done' togglable directly in the list (no need to open the record)
     list_editable = ['done']
-
-    # How many records per page
     list_per_page = 20
-
-    # Read-only fields in the edit form
     readonly_fields = ['created_at', 'updated_at']
 
-    # Organise fields in the edit form into sections
     fieldsets = [
         ('Task Details', {
-        'fields': [
-            'title',
-            'description',
-            'priority',
-            'category'
-        ]
+            'fields': ['title', 'description', 'priority', 'due_date', 'category']
         }),
         ('Status', {
             'fields': ['done']
@@ -53,19 +34,20 @@ class TaskAdmin(admin.ModelAdmin):
         }),
     ]
 
-    # Custom column — not a model field, a method
     def short_description(self, obj):
         if obj.description:
             return obj.description[:50] + '...' if len(obj.description) > 50 else obj.description
         return '—'
+    short_description.short_description = 'Description'
 
-    short_description.short_description = 'Description'  # column header label
-
-
-    # Custom admin action — mark selected tasks as done
     @admin.action(description='Mark selected tasks as done')
     def mark_done(self, request, queryset):
         updated = queryset.update(done=True)
         self.message_user(request, f'{updated} task(s) marked as done.')
 
-    actions = ['mark_done']
+    @admin.action(description='Mark selected tasks as pending')
+    def mark_pending(self, request, queryset):
+        updated = queryset.update(done=False)
+        self.message_user(request, f'{updated} task(s) marked as pending.')
+
+    actions = ['mark_done', 'mark_pending']

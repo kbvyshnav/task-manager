@@ -2,84 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Task Manager{% endblock %}</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 0 20px;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 860px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #222;
+        }
 
-    nav a {
-        margin-right: 15px;
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-    }
+        nav {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
 
-    nav {
-        margin-bottom: 30px;
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 10px;
-    }
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
 
-    .active {
-        color: blue;
-        border-bottom: 2px solid blue;
-    }
+        nav a:hover { color: #000; }
 
-    .badge {
-        display: inline-block;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-    }
+        .active {
+            color: #0055cc;
+            border-bottom: 2px solid #0055cc;
+            padding-bottom: 2px;
+        }
 
-    .high { background: #ffe0e0; color: #c00; }
-    .medium { background: #fff4e0; color: #a60; }
-    .low { background: #e0ffe0; color: #060; }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
 
-    .done-task {
-        text-decoration: line-through;
-        color: #999;
-    }
+        .high   { background: #ffe0e0; color: #c00; }
+        .medium { background: #fff4e0; color: #a60; }
+        .low    { background: #e0ffe0; color: #060; }
 
-</style>
+        .done-task {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .message {
+            padding: 10px 14px;
+            margin-bottom: 15px;
+            background: #e0ffe0;
+            border-left: 4px solid #0a0;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
 </head>
 <body>
+
 <nav>
     <a href="{% url 'home' %}"
        class="{% if request.path == '/' %}active{% endif %}">
-       Home
+        Home
     </a>
-
     <a href="{% url 'task_list' %}"
-       class="{% if request.path == '/tasks/' %}active{% endif %}">
-       Tasks
+       class="{% if '/tasks' in request.path %}active{% endif %}">
+        Tasks
     </a>
-
     <a href="{% url 'about' %}"
        class="{% if request.path == '/about/' %}active{% endif %}">
-       About
+        About
     </a>
 </nav>
+
 {% if messages %}
     {% for message in messages %}
-        <div style="
-            padding:10px;
-            margin-bottom:15px;
-            background:#e0ffe0;
-            border-left:4px solid green;">
-
-            {{ message }}
-
-        </div>
+        <div class="message">{{ message }}</div>
     {% endfor %}
 {% endif %}
 
+{% block content %}
+{% endblock %}
 
-    {% block content %}
-    {% endblock %}
 </body>
 </html>
